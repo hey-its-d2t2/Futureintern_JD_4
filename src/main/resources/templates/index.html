@@ -7,41 +7,221 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #f0f0f0;
             margin: 0;
             padding: 0;
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+        }
+        #navbar {
+            width: 100%;
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+        #navbar .name, #navbar .project-name {
+            padding: 10px 40px;
+            font-size: 20px;
+        }
+        #game-container {
+            width: 80%;
+            max-width: 600px;
+            height: 80vh;
+            position: relative;
+            margin: 60px auto 0 auto;
         }
         #game-board {
             width: 100%;
-            height: 80vh;
+            height: 100%;
             background-color: #000;
             position: relative;
-            margin: 0 auto;
             border: 2px solid #333;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        .score {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fff;
+            font-size: 20px;
+            font-weight: bold;
+            z-index: 1;
         }
         .snake {
             background-color: #0f0;
             position: absolute;
             width: 20px;
             height: 20px;
+            border-radius: 4px;
         }
         .food {
             background-color: #f00;
             position: absolute;
             width: 20px;
             height: 20px;
+            border-radius: 50%;
         }
         @media (max-width: 600px) {
-            #game-board {
+            #game-container {
                 height: 60vh;
             }
+        }
+        .popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .popup-content {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .popup-content h2 {
+            margin: 0;
+            color: #333;
+        }
+        .popup-content p {
+            font-size: 18px;
+            color: #666;
+        }
+        .popup-content button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .popup-content button:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
 <body>
-<h1>Snake Game</h1>
-<div id="game-board"></div>
+<div id="navbar">
+    <div class="name">Deepak Singh</div>
+    <div class="project-name">Snake Game</div>
+</div>
+<div id="game-container">
+    <div id="game-board">
+        <div class="score">Score: 0</div>
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const board = document.getElementById('game-board');
+        const scoreDisplay = document.querySelector('.score');
+        const boardSize = 400;
+        const boxSize = 20;
+        let snake = [{x: 160, y: 160}];
+        let food = {x: 100, y: 100};
+        let direction = 'RIGHT';
+        let newDirection = 'RIGHT';
+        let score = 0;
+        let interval = setInterval(updateGame, 200);
 
+        const eatSound = new Audio('/sounds/eat.mp3');
+        const gameoverSound = new Audio('/sounds/gameover.mp3');
+
+        function createDiv(className, x, y) {
+            const div = document.createElement('div');
+            div.className = className;
+            div.style.left = `${x}px`;
+            div.style.top = `${y}px`;
+            board.appendChild(div);
+            return div;
+        }
+
+        function updateGame() {
+            const head = { ...snake[0] };
+            if (direction === 'RIGHT') head.x += boxSize;
+            if (direction === 'LEFT') head.x -= boxSize;
+            if (direction === 'UP') head.y -= boxSize;
+            if (direction === 'DOWN') head.y += boxSize;
+
+            snake.unshift(head);
+            if (head.x === food.x && head.y === food.y) {
+                score++;
+                scoreDisplay.textContent = `Score: ${score}`;
+                eatSound.play();
+                generateFood();
+            } else {
+                snake.pop();
+            }
+
+            board.innerHTML = '';
+
+            snake.forEach(segment => createDiv('snake', segment.x, segment.y));
+            createDiv('food', food.x, food.y);
+
+            if (head.x < 0 || head.x >= boardSize || head.y < 0 || head.y >= boardSize ||
+                snake.slice(1).some(segment => segment.x === head.x && segment.y === head.y)) {
+                clearInterval(interval);
+                gameoverSound.play();
+                showGameOverPopup();
+            }
+
+            direction = newDirection;
+        }
+
+        function generateFood() {
+            food.x = Math.floor(Math.random() * (boardSize / boxSize)) * boxSize;
+            food.y = Math.floor(Math.random() * (boardSize / boxSize)) * boxSize;
+        }
+
+        function showGameOverPopup() {
+            const popup = document.createElement('div');
+            popup.className = 'popup';
+            popup.innerHTML = `
+                    <div class="popup-content">
+                        <h2>Game Over</h2>
+                        <p>Your Score: ${score}</p>
+                        <button onclick="restartGame()">Restart</button>
+                    </div>
+                `;
+            document.body.appendChild(popup);
+        }
+
+        window.restartGame = function() {
+            document.querySelector('.popup').remove();
+            snake = [{x: 160, y: 160}];
+            direction = 'RIGHT';
+            newDirection = 'RIGHT';
+            score = 0;
+            scoreDisplay.textContent = `Score: ${score}`;
+            generateFood();
+            interval = setInterval(updateGame, 200);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowUp' && direction !== 'DOWN') newDirection = 'UP';
+            if (e.key === 'ArrowDown' && direction !== 'UP') newDirection = 'DOWN';
+            if (e.key === 'ArrowLeft' && direction !== 'RIGHT') newDirection = 'LEFT';
+            if (e.key === 'ArrowRight' && direction !== 'LEFT') newDirection = 'RIGHT';
+        });
+
+        generateFood();
+    });
+</script>
 </body>
 </html>
