@@ -53,3 +53,30 @@ The Snake Game does not utilize traditional API endpoints but is served as a sta
   ```bash
   git clone https://github.com/hey-its-d2t2/Snake-Game.git
   cd Snake-Game
+  
+- **2. Set Up the Backend**
+
+  Navigate to the backend directory and build the Spring Boot application.
+
+  ```bash
+  cd backend
+  ./mvnw spring-boot:run
+  ```
+- **3. Access the Game**
+
+  Open the following URL in your browser to play the game.
+  
+  ```bash
+  http://localhost:8080/
+  ```
+### Development
+To contribute to this project or make modifications, please follow these guidelines:
+
+- Ensure code adheres to project standards.
+- Include appropriate tests for new features.
+- submit pull requests with detailed descriptions of changes.
+#### Acknowledgements
+- Spring Boot: For providing a robust framework to serve static content.
+- HTML/CSS/JavaScript: For implementing the game’s interface and functionality.
+## Contact
+For any questions or feedback, please contact me at deepsinghkumar01@gmail.com.
