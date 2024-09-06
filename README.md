@@ -37,8 +37,10 @@
    - The score is updated live on the game screen as the snake eats food.
 
 ## UI Screenshot
-
-![Snake Game Screenshot](https://github.com/user-attachments/assets/snake-game-screenshot.png)
+- **Game**
+  ![Game](https://github.com/user-attachments/assets/4fddcba3-eded-4b8f-b8c1-b3975a11f2f3)
+- **Game Over**
+  ![Game Over](https://github.com/user-attachments/assets/368060a5-55c2-41be-94ab-e9957c05a196)
 
 ## API Endpoints
 
