@@ -1,4 +1,4 @@
-package com.JD_4_Futureintern.Futureintern_JD_4;
+package com.JD_4_Futureintern;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

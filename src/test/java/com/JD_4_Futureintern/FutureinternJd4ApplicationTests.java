@@ -1,4 +1,4 @@
-package com.JD_4_Futureintern.Futureintern_JD_4;
+package com.JD_4_Futureintern;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
