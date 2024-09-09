@@ -1,6 +1,6 @@
 # Snake Game
 
-**Snake Game** is a classic game developed as part of Task 4 for my Future Intern internship. This project implements the classic Snake Game using HTML, CSS, JavaScript, and Spring Boot. The game is designed to be engaging and easy to play directly from a web browser.
+**Snake Game** is a classic game developed as part of **Task 4** for my **Future Intern internship**. This project implements the classic Snake Game using HTML, CSS, JavaScript, and Spring Boot. The game is designed to be engaging and easy to play directly from a web browser.
 
 ## Tech Stack
 
