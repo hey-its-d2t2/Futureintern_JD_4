@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class FutureinternJd4Application {
 
 	public static void main(String[] args) {
+
 		SpringApplication.run(FutureinternJd4Application.class, args);
 	}
 
